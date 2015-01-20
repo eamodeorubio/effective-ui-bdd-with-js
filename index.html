@@ -1,0 +1,1023 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Effective UI Testing in JS</title>
+
+  <meta name="description"
+        content="Slides of my talk about effective UI testing with JS">
+  <meta name="author" content="Enrique Amodeo">
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+  <link rel="stylesheet" href="./reveal.js-3.0.0/css/reveal.css">
+  <link rel="stylesheet" href="./reveal.js-3.0.0/css/theme/black.css" id="theme">
+
+  <!-- Code syntax highlighting -->
+  <link rel="stylesheet" href="./reveal.js-3.0.0/lib/css/zenburn.css">
+
+  <!-- Printing and PDF exports -->
+  <script>
+  var link = document.createElement( 'link' );
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = window.location.search.match( /print-pdf/gi ) ? './reveal.js-3.0.0/css/print/pdf.css' : './reveal.js-3.0.0/css/print/paper.css';
+  document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+
+  <!--[if lt IE 9]>
+  <script src="./reveal.js-3.0.0/lib/js/html5shiv.js"></script>
+  <![endif]-->
+
+  <style>
+      /* Aside */
+    .left {
+      float: left;
+    }
+
+    img.left {
+      margin: 0;
+      padding: 0;
+      width: 25%;
+    }
+
+    img.left + ul {
+      margin: 0;
+      width: 60%;
+    }
+
+      /* Figures with captions */
+    .reveal section figure {
+      position: relative;
+      margin: 0 auto;
+      padding: 0;
+      width: 600px;
+      height: 400px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .reveal section figure > img {
+      width: 100%;
+      max-height: none;
+      border-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .reveal section figure > figcaption {
+      position: absolute;
+      bottom: 0.5em;
+      left: 0;
+      width: 100%;
+      border-style: none;
+      border-width: 0;
+      margin: 0;
+      padding: 0;
+      background-color: rgb(37, 33, 28);
+      background-color: rgba(37, 33, 28, 0.5);
+      font-size: 0.4em;
+      text-align: center;
+    }
+
+    .reveal section figure > figcaption {
+      line-height: 1.5em;
+      vertical-align: middle;
+    }
+
+    .reveal section figure > figcaption a {
+      line-height: 1.5em !important;
+    }
+
+      /* Cover */
+    .reveal section.cover footer {
+      line-height: 33px;
+      clear: both;
+    }
+
+    .reveal section.cover > footer {
+      position: absolute;
+      bottom: 0.5em;
+      left: 0;
+      border-style: none;
+      border-width: 0;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: rgb(37, 33, 28);
+      background-color: rgba(37, 33, 28, 0.5);
+      font-size: 0.4em;
+      text-align: center;
+    }
+
+    .reveal section.cover footer img {
+      float: left;
+      margin: 0 1em 0 0;
+      padding: 0;
+      cursor: pointer;
+      border-style: none;
+    }
+
+    .reveal section.cover footer a,
+    .reveal section.cover footer span {
+      margin: 0;
+      padding: 0;
+      vertical-align: baseline;
+      line-height: 33px;
+    }
+
+      /* Separata */
+    .reveal section.separata {
+      height: 95%;
+    }
+
+    .reveal section.separata hgroup {
+      margin-top: 0.5em;
+      background-color: rgba(100,100,100,0.6);
+    }
+
+    .reveal section.separata hgroup h2,
+    .reveal section.separata hgroup h3,
+    .reveal section.separata hgroup h4 {
+      color: #F0F1EB;
+      text-shadow: #111150 0px 0px 0.2em;
+      margin: 0;
+      padding: 0.1em 0;
+      line-height: 1em;
+    }
+
+    .reveal section.separata figure {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .reveal section.separata figure > img {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      border-style: none;
+      border-width: 0;
+      margin: 0;
+      padding: 0;
+      max-height: 100%;
+      max-width: 100%;
+      z-index: -1;
+    }
+
+      /* Animation */
+    div.animation-container {
+      position: relative;
+      margin: 0 auto;
+      padding: 0;
+      width: 809px;
+      height: 399px;
+      background-color: transparent;
+      -moz-box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px 0px;
+      -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px 0px;
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px 0px;
+      overflow: hidden;
+    }
+
+    .animation-container .frame,
+    .animation-container .frame > img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 0;
+      border-style: none;
+      padding: 0;
+      margin: 0;
+      min-width: 100%;
+      max-width: none;
+      max-height: none;
+      box-shadow: none
+    }
+
+    .animation-container .frame > img.loader {
+      position: absolute;
+      top: 140px;
+      left: 180px;
+      border: 0;
+      border-style: none;
+      padding: 0;
+      margin: 0;
+      width: 126px;
+      min-width: 126px;
+      box-shadow: none;
+    }
+
+    .snippet {
+      font-family: monospace !important;
+    }
+
+    .reveal table.matrix {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .reveal table.matrix th.pivot {
+      border-style: none;
+    }
+
+    .reveal table.matrix th, .reveal table.matrix td {
+      border-style: solid;
+      border-width: 1px;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .reveal table.matrix td li {
+      list-style: none;
+    }
+
+    .reveal pre {
+      width:100%;
+    }
+
+    .reveal .bad {
+      color: red;
+      font-style: italic;
+    }
+
+    .reveal .small {
+      font-size: 0.6em;
+    }
+
+    .reveal .highlight {
+      background-color: #606000; /*#222230;*/
+      font-style: italic;
+    }
+
+    .reveal section figure.marble {
+      width:100%;
+      margin: auto 0;
+    }
+    .reveal section figure.marble img{
+      margin: 0 auto;
+      vertical-align:middle;
+      display:inline-block;
+      height: 100%;
+      width:auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="reveal">
+
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+<section class="cover">
+  <h1>Effective UI Testing in JS</h1>
+  <h2>(tools &amp; patterns)</h2>
+  <p>
+    <small>By <a
+            href="http://eamodeorubio.wordpress.com/about/">Enrique
+      Amodeo</a> /
+      <a href="http://twitter.com/eamodeorubio">@eamodeorubio</a></small>
+  </p>
+  <footer>
+    <a rel="license"
+       href="http://creativecommons.org/licenses/by-nc-sa/2.0/">
+      <img alt="Creative Commons License"
+           src="http://i.creativecommons.org/l/by-nc-sa/2.0/88x31.png"/>
+    </a>
+
+    <a rel="license" style="vertical-align: middle"
+       href="http://creativecommons.org/licenses/by-nc-sa/2.0/">
+      This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 2.0 Generic
+      License
+    </a>
+  </footer>
+</section>
+
+<section>
+  <h2>Enrique Amodeo</h2>
+  <h4>(who is this guy?)</h4>
+
+  <img src="img/EnriqueAmodeo.jpg" class="left"
+       alt="[Enrique Amodeo, circa 2010]">
+  <ul>
+    <li>Programming since 1984</li>
+    <li>Currently eBay Senior Software Engineer</li>
+    <li>Has loved JS since 2005</li>
+    <li>Test infected</li>
+    <li>Enthusiast of the Agile/Lean way</li>
+    <li>Follow me at
+      <a href="https://twitter.com/eamodeorubio">@eamodeorubio</a></li>
+  </ul>
+</section>
+
+<section>
+  <h2>This talk</h2>
+  <ol>
+    <li>Tests that matter</li>
+    <li>The art of testing the UI</li>
+    <li>WebDriverJS</li>
+    <li>(OPTIONAL) The Page Object Pattern</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Commercial time</h2>
+  <p>My new book is coming!!</p>
+  <p>"Learning BDD with Javascript"</p>
+  <p>In a couple of months!!</p>
+</section>
+
+<section class="separata">
+  <hgroup>
+    <h2>Tests that matter</h2>
+  </hgroup>
+  <!-- <figure>
+    <img src="./img/test.jpg">
+    <figcaption>
+      <span>Original by DaveBleasdale: </span>
+      <a href="https://www.flickr.com/photos/sidelong/246816211"
+         target="_blank">https://www.flickr.com/photos/sidelong/246816211</a>
+    </figcaption>
+  </figure> -->
+  <figure>
+    <img src="./img/test2.jpg">
+    <figcaption>
+      <span>Original By "Touring Club Suisse/Schweiz/Svizzero TCS":</span>
+      <a href="http://www.flickr.com/photos/touring_club/6073241403/"
+      target="_blank">http://www.flickr.com/photos/touring_club/6073241403/</a>
+    </figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>TDD is UNDEAD !!</h2>
+
+  <figure style="width: 640px;">
+    <img src="./img/undead.jpg">
+    <figcaption>
+      <span>Original by Bjoern Maletz: </span>
+      <a href="https://www.flickr.com/photos/bjoernmaletz/8585617590"
+      target="_blank">https://www.flickr.com/photos/bjoernmaletz/8585617590</a>
+    </figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Naive TDD</h2>
+  <h4>(Naive TDD == Class Unit Testing)</h4>
+  <ul>
+    <li>Testing the behavior of each component</li>
+    <li>One suite per component</li>
+    <li>Isolation between tests</li>
+    <li>Strong focus in fine grained technical design</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Class Unit Testing is doomed</h2>
+  <ul>
+    <li>Not relevant for stakeholders</li>
+    <li>Poor correlation functionality &lt;-&gt; tests</li>
+    <li>What does mean that all the tests are green?</li>
+    <li>What happens if a feature changes?</li>
+    <li>What happens if we need to refactor?</li>
+    <li>Tons of irrelevant tests!</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Naive BDD</h2>
+  <h4>(Naive BDD == End to End Testing)</h4>
+  <ul>
+    <li>Testing most of the system together</li>
+    <li>Maybe mock external systems</li>
+    <li>Set up at the DB level</li>
+    <li>Driving the test through the UI</li>
+    <li>Asserting against the UI and the DB</li>
+  </ul>
+</section>
+
+<section>
+  <h2>End to End Testing is doomed</h2>
+  <ul>
+    <li>Deadly slow</li>
+    <li>Leads to test last</li>
+    <li>Complex test code base</li>
+    <li>Where is the problem is a test fails?</li>
+    <li>Tests should have a Single Responsability too!</li>
+    <li>Combinatory explosions of scenarios</li>
+  </ul>
+</section>
+
+<section>
+  <h2>BDD</h2>
+  <h4>(Good BDD == Good TDD)</h4>
+  <ul>
+    <li>Slice into problem domains</li>
+    <li>Each domain has its own language</li>
+    <li>Test the behaviors of each domain</li>
+    <li>One domain == One cluster of objects</li>
+    <li>One behavior == One isolated test suite</li>
+    <li>Stub other domains &amp; external systems</li>
+    <li>Do not forget to refactor</li>
+  </ul>
+</section>
+
+<section>
+  <h2>BDD tests are good tests</h2>
+  <ul>
+    <li>Fast and focused</li>
+    <li>Relevant for stakeholders</li>
+    <li>One suite per feature</li>
+    <li>What does mean that all the tests are green?</li>
+    <li>What happens if a feature changes?</li>
+    <li>What happens if we need to refactor?</li>
+  </ul>
+</section>
+
+<section class="separata">
+  <hgroup>
+    <h2 style="color: #FFD0B0;">The art of testing the UI</h2>
+  </hgroup>
+  <figure>
+    <img src="./img/tocukeornot.png">
+  </figure>
+</section>
+
+<section>
+  <h2>The right tests for the UI</h2>
+  <ul>
+    <li>Business rules are not relevant</li>
+    <li>HTTP details not relevant</li>
+    <li>UX details are relevant</li>
+    <li>Shown information is relevant</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The presentation domain</h2>
+  <ul>
+    <li>Cross Browser</li>
+    <li>Rendering information as HTML</li>
+    <li>Transforming DOM events to user gestures</li>
+    <li>Stakeholders: end users, UX, etc.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The interactivity domain</h2>
+  <ul>
+    <li>Validation &amp; formatting</li>
+    <li>Navigation</li>
+    <li>Performing user commands</li>
+    <li>Coordinating server/datasource calls</li>
+    <li>Stakeholders: end users, UX, business, etc.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Two domains, two subsystems</h2>
+  <figure style="background-color:white;">
+    <img src="./img/ui_arch.png">
+  </figure>
+</section>
+
+<section>
+  <h2>Testing the controller</h2>
+  <figure>
+    <img src="./img/test_control.png">
+  </figure>
+</section>
+
+<section>
+  <h2>Testing the controller</h2>
+  <h4>formatting</h4>
+  <pre><code contenteditable class="gherkin">
+  Feature: Display order price
+
+  Background:
+    Given that the order total price is "10" "USD"
+
+  Scenario: USA user
+    Given that the user is from "USA"
+    When the user displays the order
+    Then "10.00 $" will be shown as total price
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing the controller</h2>
+  <h4>validation</h4>
+  <pre><code contenteditable class="gherkin">
+  Feature: Validate add product form
+
+  Scenario: invalid quantity
+    When the user fills "one hundred" in the quantity field
+    Then the quantity field will be highlighted as erroneous
+    And the quantity field will show "one hundred"
+    And an "invalid quantity (one hundred)" message will appear
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing the controller</h2>
+  <h4>server communication</h4>
+  <pre><code contenteditable class="gherkin">
+  Feature: User adds a product
+
+  Scenario: send request
+    When the user adds "2 cappucino" to the order
+    Then an add product "2 cappucino" request will be sent to the server
+    And the add product form will be disabled
+    And a progress bar will be shown
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing the controller</h2>
+  <h4>Advantages</h4>
+  <ul>
+    <li>Plain old test</li>
+    <li>Fast</li>
+    <li>Test first</li>
+    <li>Most of the UI code is here!</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Testing the controller</h2>
+  <h4>Tools</h4>
+  <ul>
+    <li>NPM</li>
+    <li>Mocha or Jasmine</li>
+    <li>Chai</li>
+    <li>Sinon</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Testing the passive view</h2>
+  <figure style="background-color:white;">
+    <img src="./img/test_view.png">
+  </figure>
+</section>
+
+<section>
+  <h2>Testing the passive view</h2>
+  <h4>rendering</h4>
+  <pre><code contenteditable>
+  Feature: Render order
+
+  Scenario:
+    When the following order is rendered:
+      | contents                 | total price | enabled forms             |
+      | 2 Cappucinos, 1 Expresso | Ten dollars | addProduct, completeOrder |
+    Then the total price field will contain "Ten dollars"
+    And the following items will be shown:
+      | product    | quantity |
+      | Cappucinos | 2        |
+      | Expresso   | 1        |
+    And the "addProduct, completeOrder" forms will be enabled
+    And the "removeProduct, cancelOrder" forms will be disabled
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing the passive view</h2>
+  <h4>user gestures</h4>
+  <pre><code contenteditable class="gherkin">
+  Feature: Request to add a product
+
+  Background:
+    Given that the "product" input has been filled with "Cappucino"
+    And that the "quantity" input has been filled with "error"
+
+  Scenario: using enter
+    Given that the "product" input has focus
+    When the user press "ENTER"
+    Then the user request to add "error Cappucino"
+
+  Scenario: using button
+    When the user clicks the "submit" button
+    Then the user request to add "error Cappucino"
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing the passive view</h2>
+  <h4>It has disadvantages!!</h4>
+  <ul>
+    <li>Slow</li>
+    <li>Brittle</li>
+    <li>Technologically complex</li>
+    <li>Hard to test first</li>
+  </ul>
+</section>
+
+<section>
+  <h2>The passive view</h2>
+  <h4>Should we test it?</h4>
+  <ul>
+    <li>Is it a source of bugs?</li>
+    <li>Is it complex enough?</li>
+    <li>Is crossbrowser solved by library?</li>
+    <li>Complex user gestures?</li>
+    <li>Complex visualizations?</li>
+  </ul>
+</section>
+
+<section class="separata">
+  <hgroup>
+    <h2>WebDriver API</h2>
+  </hgroup>
+  <figure>
+    <img src="./img/robot.jpg">
+    <figcaption>
+      <span>Original by jeffedoe: </span>
+      <a href="https://www.flickr.com/photos/jeffedoe/506027963"
+      target="_blank">https://www.flickr.com/photos/jeffedoe/506027963</a>
+    </figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>What is it?</h2>
+  <ul>
+    <li>Standard: <a href="http://www.w3.org/TR/webdriver/">http://www.w3.org/TR/webdriver/</a></li>
+    <li>Platform and language-neutral wire protocol</li>
+    <li>Remote control of the browser</li>
+    <li>Native DOM events</li>
+    <li>DOM inspection</li>
+    <li>Remote scripting</li>
+  </ul>
+</section>
+
+<section>
+  <h2>For JavaScript too?</h2>
+  <ul>
+    <li>Two well known clients</li>
+    <li>Available as NPM packages</li>
+    <li>WebDriverJS: <a href="https://code.google.com/p/selenium/wiki/WebDriverJs">https://code.google.com/p/selenium/wiki/WebDriverJs</a></li>
+    <li>WebDriver IO: <a href="http://webdriver.io/">http://webdriver.io/</a></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Testing rendering</h2>
+  <figure style="background-color:white;">
+    <img src="./img/test_view_render.png">
+  </figure>
+</section>
+
+<section>
+  <h2>Testing rendering</h2>
+  <h4>set up</h4>
+  <pre><code contenteditable>
+  before(function () {
+    this.driver.get('http://localhost:8888/testpage.html');
+
+    return this.driver.executeAsyncScript(function () {
+      var done = arguments[0];
+      window.view = require('order-view')('.container', done);
+    });
+  });
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing rendering</h2>
+  <h4>clean up</h4>
+  <pre><code contenteditable>
+    afterEach(function() {
+      return this.driver.executeScript(function () {
+        document.querySelector('.container').innerHTML = '';
+      });
+    });
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing rendering</h2>
+  <h4>act</h4>
+  <pre><code contenteditable>
+  describe('when an oreder is rendered', function () {
+    var orderViewModel = { price: 'Ten dollars' /*, more stuff */  };
+
+    beforeEach(function () {
+      return this.driver.executeAsyncScript(function () {
+        var viewModel = arguments[0],
+            cb = arguments[1];
+
+        view.render(viewModel, cb);
+      }, orderViewModel);
+    });
+    //  we will see in a moment
+  });
+
+</code></pre>
+</section>
+
+<section>
+  <h2>Testing rendering</h2>
+  <h4>assert</h4>
+  <pre><code contenteditable>
+  describe('when an oreder is rendered', function () {
+    //  the set up we just saw
+    it('the total price field will contain "Ten dollars"', function () {
+      var priceElement = this.driver.findElement({
+        css: '.container .order .price'
+      });
+
+      return expect(priceElement.getText())
+          .to.eventually.be.equal(viewModel.price);
+    });
+    // the rest of the tests
+  });
+
+</code></pre>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <figure style="background-color:white;">
+    <img src="./img/test_view_gestures.png">
+  </figure>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <h4>set up the spy</h4>
+  <pre><code contenteditable>
+  before(function () {
+    return this.driver.executeAsyncScript(function () {
+      var newOrderView = require('order-view'),
+          someTestOrderViewModel = arguments[0],
+          cb = arguments[1];
+
+      window.controller = {
+        addBeverage: sinon.spy()
+      };
+
+      newOrderView('.container', window.controller)
+          .render(someTestOrderViewModel, cb);
+    }, someTestOrderViewModel);
+  });
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <h4>fill the form</h4>
+  <pre><code contenteditable>
+  beforeEach(function () {
+    this.driver.findElement({
+      css: '.container .order .add-product input[name="beverage"]'
+    }).sendKeys('Cappuccino');
+
+    return this.driver.findElement({
+      css: '.container .order .add-product input[name="quantity"]'
+    }).sendKeys('2');
+  });
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <h4>clean up</h4>
+  <pre><code contenteditable>
+  afterEach(function () {
+    driver.findElement({
+      css: '.container .order .add-product input[name="beverage"]'
+    }).clear();
+
+    driver.findElement({
+      css: '.container .order .add-product input[name="quantity"]'
+    }).clear();
+
+    return driver.executeScript(function () {
+      controller.addBeverage.reset();
+    });
+  });
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <h4>act (press ENTER)</h4>
+  <pre><code contenteditable>
+  this.driver.findElement({
+    css: '.container .order .add-product input[name="quantity"]'
+  }).sendKeys(Key.ENTER);
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <h4>act (press the button)</h4>
+  <pre><code contenteditable>
+  this.driver.findElement({
+    css: '.container .order .add-product button[name="addToOrder"]'
+  }).click();
+  </code></pre>
+</section>
+
+<section>
+  <h2>Testing user gestures</h2>
+  <h4>assert</h4>
+  <pre><code contenteditable>
+  return this.driver.executeScript(function () {
+    var expectedParameters = arguments[0];
+
+    expect(controller.addBeverage)
+        .to.have.been.calledWith(expectedParameters);
+  }, expectedParameters);
+  </code></pre>
+</section>
+
+<section>
+  <h2>Advantages &amp; disadvantages</h2>
+  <ul>
+    <li>Different bugs in different browsers</li>
+    <li>Not many alternatives</li>
+    <li>Grid can speed up tests!</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Do we have more time?</h2>
+  <p><a href="#/45">Yes !</a></p>
+  <p><a href="#/52">Nope :(</a></p>
+</section>
+
+<section class="separata">
+  <hgroup>
+    <h2>The Page Object Pattern</h2>
+  </hgroup>
+  <figure>
+    <img src="./img/wireframe.png">
+    <figcaption>
+      <span>Original by hauskapellmeister: </span>
+      <a href="https://www.flickr.com/photos/hauskapellmeister/3216153514"
+      target="_blank">https://www.flickr.com/photos/hauskapellmeister/3216153514</a>
+    </figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Not so brittle tests</h2>
+  <ul>
+    <li>Encapsulate WebDriver details</li>
+    <li>Encapsulate DOM details</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Best practices</h2>
+  <ul>
+    <li>One object per UI block not per page!</li>
+    <li>Reuse through composition</li>
+    <li>API in terms of UX not DOM</li>
+    <li>Favor less specific CSS selectors</li>
+    <li>No asserts</li>
+    <li>No navigation</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Encapsulating DOM access</h2>
+  <h4>simple</h4>
+  <pre><code contenteditable>
+  function newOrderPageObject(driver, containerSel) {
+    return {
+      totalPrice: function () {
+        return driver.findElement({
+          css: containerSel + ' .order .price'
+        }).getText();
+      }
+    };
+  };
+  </code></pre>
+</section>
+
+<section>
+  <h2>Encapsulating DOM access</h2>
+  <h4>complex</h4>
+  <pre><code contenteditable>
+  function newProductLinePageObject(webElement) {
+    return {
+      info: function () {
+        return Promise.all([
+          webElement.findElement({ css: '.name' }).getText(),
+          webElement.findElement({ css: '.quantity' }).getText()
+        ]).then(function (fields) {
+          return {
+            name: fields[0],
+            quantity: fields[1]
+          };
+        });
+      }
+    };
+  };
+  </code></pre>
+</section>
+
+<section>
+  <h2>Encapsulating DOM events</h2>
+  <pre><code contenteditable>
+  function newFormPageObject(webElement) {
+    return {
+      typeText: function (fieldName, text) {
+        return webElement.find({css: '[name="' + fieldName + ']"'})
+            .sendKeys(text);
+      },
+      pressKey: function (fieldName, keyName) {
+        return webElement.find({css: '[name="' + fieldName + '"]'})
+            .sendKeys(webdriver.Keys[keyName]);
+      },
+      clickSubmit: function () {
+        return webElement.find({css: '[type="submit"]'}).click();
+      }
+    };
+  };
+  </code></pre>
+</section>
+
+<section>
+  <h2>Reusing</h2>
+  <pre><code contenteditable>
+  function newOrderPageObject(driver, containerSel) {
+    return {
+      addProductForm: function () {
+        return newFormPageObject(driver.findElement({
+          css: containerSel + ' .order .add-product'
+        }));
+      },
+      productLine: function (i) {
+        return newProductLinePageObject(driver.findElement({
+          css: containerSel + '.product-line:nth-of-type(' + (i + 1) + ')'
+        }));
+      }
+    };
+  };
+  </code></pre>
+</section>
+
+<section class="separata">
+  <hgroup style="background-color:transparent;">
+    <h1>The End</h1>
+
+    <h2>Some questions?</h2>
+  </hgroup>
+  <figure>
+    <img src="./img/questions.jpg">
+    <figcaption>
+      <span>Original by Ethan Lofton: </span>
+      <a href="http://www.flickr.com/photos/eleaf/2536358399/"
+      target="_blank">http://bit.ly/1arHGj</a>
+    </figcaption>
+  </figure>
+</section>
+</div>
+
+</div>
+<script src="./reveal.js-3.0.0/lib/js/head.min.js"></script>
+<script src="./reveal.js-3.0.0/js/reveal.js"></script>
+
+<script>
+
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  //maxScale: 1,
+  transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+  { src: './reveal.js-3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: './reveal.js-3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: './reveal.js-3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: './reveal.js-3.0.0/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: './reveal.js-3.0.0/plugin/zoom-js/zoom.js', async: true },
+  { src: './reveal.js-3.0.0/plugin/notes/notes.js', async: true }
+  ]
+});
+
+</script>
+
+</body>
+</html>
