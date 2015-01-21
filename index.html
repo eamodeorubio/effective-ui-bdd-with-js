@@ -141,6 +141,7 @@
       background-color: rgba(100,100,100,0.6);
     }
 
+    .reveal section.separata hgroup h1,
     .reveal section.separata hgroup h2,
     .reveal section.separata hgroup h3,
     .reveal section.separata hgroup h4 {
@@ -285,7 +286,7 @@
   <h2>(tools &amp; patterns)</h2>
   <p>
     <small>By <a
-            href="http://eamodeorubio.wordpress.com/about/">Enrique
+            href="http://de.linkedin.com/pub/enrique-amodeo-rubio/26/44a/833">Enrique
       Amodeo</a> /
       <a href="http://twitter.com/eamodeorubio">@eamodeorubio</a></small>
   </p>
@@ -309,7 +310,7 @@
   <h4>(who is this guy?)</h4>
 
   <img src="img/EnriqueAmodeo.jpg" class="left"
-       alt="[Enrique Amodeo, circa 2010]">
+       alt="[Enrique Amodeo, circa 2015]">
   <ul>
     <li>Programming since 1984</li>
     <li>Currently eBay Senior Software Engineer</li>
@@ -333,9 +334,11 @@
 
 <section>
   <h2>Commercial time</h2>
-  <p>My new book is coming!!</p>
-  <p>"Learning BDD with Javascript"</p>
-  <p>In a couple of months!!</p>
+  <ul>
+    <li>This talk is only a brief excerpt of my new book</li>
+    <li>"Learning BDD with Javascript"</li>
+    <li>In a couple of months!!</li>
+  </ul>
 </section>
 
 <section class="separata">
@@ -375,7 +378,7 @@
 
 <section>
   <h2>Naive TDD</h2>
-  <h4>(Naive TDD == Class Unit Testing)</h4>
+  <h4>(a.k.a. Class Unit Testing)</h4>
   <ul>
     <li>Testing the behavior of each component</li>
     <li>One suite per component</li>
@@ -389,16 +392,18 @@
   <ul>
     <li>Not relevant for stakeholders</li>
     <li>Poor correlation functionality &lt;-&gt; tests</li>
-    <li>What does mean that all the tests are green?</li>
-    <li>What happens if a feature changes?</li>
-    <li>What happens if we need to refactor?</li>
+    <ul>
+      <li>What does mean that all the tests are green?</li>
+      <li>What happens if a feature changes?</li>
+      <li>What happens if we need to refactor?</li>
+    </ul>
     <li>Tons of irrelevant tests!</li>
   </ul>
 </section>
 
 <section>
   <h2>Naive BDD</h2>
-  <h4>(Naive BDD == End to End Testing)</h4>
+  <h4>(a.k.a. End to End Testing)</h4>
   <ul>
     <li>Testing most of the system together</li>
     <li>Maybe mock external systems</li>
@@ -414,7 +419,7 @@
     <li>Deadly slow</li>
     <li>Leads to test last</li>
     <li>Complex test code base</li>
-    <li>Where is the problem is a test fails?</li>
+    <li>A test is failing, which code should I fix?</li>
     <li>Tests should have a Single Responsability too!</li>
     <li>Combinatory explosions of scenarios</li>
   </ul>
@@ -422,7 +427,7 @@
 
 <section>
   <h2>BDD</h2>
-  <h4>(Good BDD == Good TDD)</h4>
+  <h4>(a.k.a. Just TDD done right)</h4>
   <ul>
     <li>Slice into problem domains</li>
     <li>Each domain has its own language</li>
@@ -458,31 +463,38 @@
 <section>
   <h2>The right tests for the UI</h2>
   <ul>
+    <li>Main stakeholders: end users and UX.</li>
     <li>Business rules are not relevant</li>
     <li>HTTP details not relevant</li>
     <li>UX details are relevant</li>
-    <li>Shown information is relevant</li>
+    <li>Wich information is shown, and how, is relevant</li>
   </ul>
 </section>
 
 <section>
   <h2>The presentation domain</h2>
   <ul>
+    <li>Stateless</li>
     <li>Cross Browser</li>
     <li>Rendering information as HTML</li>
-    <li>Transforming DOM events to user gestures</li>
-    <li>Stakeholders: end users, UX, etc.</li>
+    <li>Transforming DOM events to simple user gestures</li>
+    <li>As thin as possible</li>
   </ul>
 </section>
 
 <section>
   <h2>The interactivity domain</h2>
   <ul>
-    <li>Validation &amp; formatting</li>
-    <li>Navigation</li>
-    <li>Performing user commands</li>
-    <li>Coordinating server/datasource calls</li>
-    <li>Stakeholders: end users, UX, business, etc.</li>
+    <li>Stateful</li>
+    <li>How to react to user gestures</li>
+    <ul>
+      <li>Validation &amp; formatting</li>
+      <li>Navigation</li>
+      <li>Coordinating server/datasource calls</li>
+      <li>Computing the next view model</li>
+    </ul>
+    <li>Most of the UI code should be here</li>
+    <li>Controllers, models, routing rules, etc.</li>
   </ul>
 </section>
 
@@ -518,9 +530,14 @@
 
 <section>
   <h2>Testing the controller</h2>
-  <h4>validation</h4>
+  <h4>validating &amp; formatting</h4>
   <pre><code contenteditable class="gherkin">
   Feature: Validate add product form
+
+  Scenario: success
+    When the user fills " 100  uSd  " in the quantity field
+    Then the quantity field will not be highlighted as erroneous
+    And the quantity field will show "100.00 $"
 
   Scenario: invalid quantity
     When the user fills "one hundred" in the quantity field
@@ -532,11 +549,11 @@
 
 <section>
   <h2>Testing the controller</h2>
-  <h4>server communication</h4>
+  <h4>server request &amp; view model update</h4>
   <pre><code contenteditable class="gherkin">
   Feature: User adds a product
 
-  Scenario: send request
+  Scenario:
     When the user adds "2 cappucino" to the order
     Then an add product "2 cappucino" request will be sent to the server
     And the add product form will be disabled
