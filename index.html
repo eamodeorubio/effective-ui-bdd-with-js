@@ -519,12 +519,12 @@
   Feature: Display order price
 
   Background:
-    Given that the order total price is "10" "USD"
+    Given that the order total price is "1000" "USD"
 
   Scenario: USA user
     Given that the user is from "USA"
     When the user displays the order
-    Then "10.00 $" will be shown as total price
+    Then "$1,000.00" will be shown as total price
   </code></pre>
 </section>
 
@@ -535,9 +535,9 @@
   Feature: Validate add product form
 
   Scenario: success
-    When the user fills " 100  uSd  " in the quantity field
+    When the user fills " 1000   " in the quantity field
     Then the quantity field will not be highlighted as erroneous
-    And the quantity field will show "100.00 $"
+    And the quantity field will show "1,000"
 
   Scenario: invalid quantity
     When the user fills "one hundred" in the quantity field
