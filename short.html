@@ -284,6 +284,7 @@
 <section class="cover">
   <h1>Effective UI Testing in JS</h1>
   <h2>(tools &amp; patterns)</h2>
+  <h4>(short version)</h4>
   <p>
     <small>By <a
             href="http://de.linkedin.com/pub/enrique-amodeo-rubio/26/44a/833">Enrique
@@ -323,16 +324,6 @@
 </section>
 
 <section>
-  <h2>This talk</h2>
-  <ol>
-    <li>Tests that matter</li>
-    <li>The art of testing the UI</li>
-    <li>WebDriverJS</li>
-    <li>The Page Object Pattern</li>
-  </ol>
-</section>
-
-<section>
   <h2>Commercial time</h2>
   <ul>
     <li>This talk is only a brief excerpt of my new book</li>
@@ -369,17 +360,15 @@
 </section>
 
 <section>
-  <h2>Naive TDD</h2>
-  <h4>(a.k.a. Class Unit Testing)</h4>
-  <ul>
-    <li>Testing the behavior of each class</li>
-    <li>One suite per class</li>
-    <li>Isolation between tests</li>
-    <li>Strong focus in fine grained technical design</li>
-  </ul>
+  <h2>TDD, you know, don't you?</h2>
+  <p>Yes I know, test first, red/green/refactor, but...</p>
+  <p>Should I test the behavior of each class?</p>
+  <p>or</p>
+  <p>Should I test the whole system together?</p>
+  <p class="fragment">None of them! Just BDD!</p>
 </section>
 
-<section>
+<!-- <section>
   <h2>Class Unit Testing is doomed</h2>
   <ul>
     <li>Not relevant for stakeholders</li>
@@ -393,18 +382,6 @@
 </section>
 
 <section>
-  <h2>Naive BDD</h2>
-  <h4>(a.k.a. End to End Testing)</h4>
-  <ul>
-    <li>Testing most of the system together</li>
-    <li>Maybe mock external systems</li>
-    <li>Set up at the DB level</li>
-    <li>Driving the test through the UI</li>
-    <li>Asserting against the UI and the DB</li>
-  </ul>
-</section>
-
-<section>
   <h2>End to End Testing is doomed</h2>
   <ul>
     <li>Deadly slow</li>
@@ -414,7 +391,7 @@
     <li>Tests should have a Single Responsability too!</li>
     <li>Combinatory explosions of scenarios</li>
   </ul>
-</section>
+</section> -->
 
 <section>
   <h2>BDD</h2>
@@ -438,7 +415,7 @@
   </ul>
 </section>
 
-<section>
+<!-- <section>
   <h2>BDD tests are good tests</h2>
   <ul>
     <li>Fast and focused</li>
@@ -451,7 +428,7 @@
       <li>More robust against OO design changes</li>
     </ul>
   </ul>
-</section>
+</section> -->
 
 <section class="separata">
   <hgroup>
@@ -465,7 +442,6 @@
 <section>
   <h2>UI responsabilities?</h2>
   <ul>
-    <li>Main stakeholders: end users and UX.</li>
     <li>Not the business rules are not relevant</li>
     <li>Not the HTTP connection details</li>
     <li>Is just rendering, right?</li>
@@ -475,12 +451,12 @@
 <section>
   <h2>Modern UI is more complex</h2>
   <ul>
-    <li>Presentation domain</li>
-    <li>Interactivity domain</li>
+    <li>Presentation domain, or how to deal with the DOM</li>
+    <li>Interactivity domain, or how to react to user</li>
   </ul>
 </section>
 
-<section>
+<!-- <section>
   <h2>The presentation domain</h2>
   <ul>
     <li>Solves Cross Browser issues</li>
@@ -489,9 +465,9 @@
     <li>As thin as possible</li>
     <li>Stateless layer</li>
   </ul>
-</section>
+</section> -->
 
-<section>
+<!-- <section>
   <h2>The interactivity domain</h2>
   <h4>(or how to react to user gestures)</h4>
   <ul>
@@ -500,9 +476,9 @@
     <li>Coordinating server/datasource calls</li>
     <li>Computing the next view model</li>
   </ul>
-</section>
+</section> -->
 
-<section>
+<!-- <section>
   <h2>The interactivity domain</h2>
   <h4>(a.k.a. the "controller")</h4>
   <ul>
@@ -510,7 +486,7 @@
     <li>Most of the UI code should be here</li>
     <li>Stateful</li>
   </ul>
-</section>
+</section> -->
 
 <section>
   <h2>Two domains, two subsystems</h2>
