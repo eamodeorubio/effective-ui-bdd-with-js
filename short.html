@@ -564,19 +564,19 @@
   <h2>View's responsabilities</h2>
   <h4>rendering</h4>
   <pre><code contenteditable>
-    Feature: Render order
+Feature: Render order
 
-    Scenario:
-      When the following order is rendered:
-        | contents                 | total price | enabled forms             |
-        | 2 Cappucinos, 1 Expresso | Ten dollars | addProduct, completeOrder |
-      Then the total price field will contain "Ten dollars"
-      And the following items will be shown:
-        | product    | quantity |
-        | Cappucinos | 2        |
-        | Expresso   | 1        |
-      And the "addProduct, completeOrder" forms will be enabled
-      And the "removeProduct, cancelOrder" forms will be disabled
+Scenario:
+  When the following order is rendered:
+    | contents                 | total price | enabled forms             |
+    | 2 Cappucinos, 1 Expresso | Ten dollars | addProduct, completeOrder |
+  Then the total price field will contain "Ten dollars"
+  And the following items will be shown:
+    | product    | quantity |
+    | Cappucinos | 2        |
+    | Expresso   | 1        |
+  And the "addProduct, completeOrder" forms will be enabled
+  And the "removeProduct, cancelOrder" forms will be disabled
   </code></pre>
 </section>
 
