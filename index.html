@@ -925,13 +925,12 @@ Scenario:
 <section>
   <h2>Encapsulating DOM access</h2>
   <h4>complex</h4>
-  <pre><code contenteditable>
-  function newProductLinePageObject(webElement) {
+  <pre><code contenteditable>  function newProductLinePageObject(webElement) {
     return {
       info: function () {
         return Promise.all([
-          webElement.findElement({ css: '.name' }).getText(),
-          webElement.findElement({ css: '.quantity' }).getText()
+        webElement.findElement({ css: '.name' }).getText(),
+        webElement.findElement({ css: '.quantity' }).getText()
         ]).then(function (fields) {
           return {
             name: fields[0],
@@ -940,35 +939,31 @@ Scenario:
         });
       }
     };
-  };
-  </code></pre>
+  };</code></pre>
 </section>
 
 <section>
   <h2>Encapsulating DOM events</h2>
-  <pre><code contenteditable>
-  function newFormPageObject(webElement) {
+  <pre><code contenteditable>  function newFormPageObject(webElement) {
     return {
       typeText: function (fieldName, text) {
         return webElement.find({css: '[name="' + fieldName + ']"'})
-            .sendKeys(text);
+        .sendKeys(text);
       },
       pressKey: function (fieldName, keyName) {
         return webElement.find({css: '[name="' + fieldName + '"]'})
-            .sendKeys(webdriver.Keys[keyName]);
+        .sendKeys(webdriver.Keys[keyName]);
       },
       clickSubmit: function () {
         return webElement.find({css: '[type="submit"]'}).click();
       }
     };
-  };
-  </code></pre>
+  };</code></pre>
 </section>
 
 <section>
   <h2>Reusing</h2>
-  <pre><code contenteditable>
-  function newOrderPageObject(driver, containerSel) {
+  <pre><code contenteditable>  function newOrderPageObject(driver, containerSel) {
     return {
       totalPrice: function () { /* ...skipped for brevity */ },
       addProductForm: function () {
@@ -982,8 +977,7 @@ Scenario:
         }));
       }
     };
-  };
-  </code></pre>
+  };</code></pre>
 </section>
 
 <section>
