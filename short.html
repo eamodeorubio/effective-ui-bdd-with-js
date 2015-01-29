@@ -368,31 +368,6 @@
   <p class="fragment">None of them! Just BDD!</p>
 </section>
 
-<!-- <section>
-  <h2>Class Unit Testing is doomed</h2>
-  <ul>
-    <li>Not relevant for stakeholders</li>
-    <li>Poor correlation functionality &lt;-&gt; tests</li>
-    <ul>
-      <li>What does mean that all the tests are green?</li>
-      <li>What happens if a feature changes?</li>
-      <li>A refactor often breaks the tests</li>
-    </ul>
-  </ul>
-</section>
-
-<section>
-  <h2>End to End Testing is doomed</h2>
-  <ul>
-    <li>Deadly slow</li>
-    <li>Leads to test last</li>
-    <li>Complex test code base</li>
-    <li>A test is failing, which code should I fix?</li>
-    <li>Tests should have a Single Responsability too!</li>
-    <li>Combinatory explosions of scenarios</li>
-  </ul>
-</section> -->
-
 <section>
   <h2>BDD</h2>
   <h4>(a.k.a. Just TDD done right)</h4>
@@ -415,21 +390,6 @@
   </ul>
 </section>
 
-<!-- <section>
-  <h2>BDD tests are good tests</h2>
-  <ul>
-    <li>Fast and focused</li>
-    <li>Relevant for stakeholders</li>
-    <li>One test suite per behavior</li>
-    <ul>
-      <li>A test is failing -&gt; debug only a bunch of objects</li>
-      <li>A test suite is ok -&gt; its behavior is ok</li>
-      <li>A feature changes? Change its test suite</li>
-      <li>More robust against OO design changes</li>
-    </ul>
-  </ul>
-</section> -->
-
 <section class="separata">
   <hgroup>
     <h2 style="color: #FFD0B0;">The art of testing the UI</h2>
@@ -442,7 +402,7 @@
 <section>
   <h2>UI responsabilities?</h2>
   <ul>
-    <li>Not the business rules are not relevant</li>
+    <li>Not the business rules</li>
     <li>Not the HTTP connection details</li>
     <li>Is just rendering, right?</li>
   </ul>
@@ -452,41 +412,9 @@
   <h2>Modern UI is more complex</h2>
   <ul>
     <li>Presentation domain, or how to deal with the DOM</li>
-    <li>Interactivity domain, or how to react to user</li>
+    <li>UX domain, or how to interact with the user</li>
   </ul>
 </section>
-
-<!-- <section>
-  <h2>The presentation domain</h2>
-  <ul>
-    <li>Solves Cross Browser issues</li>
-    <li>Renders information as HTML</li>
-    <li>Transforms DOM events to simple user gestures</li>
-    <li>As thin as possible</li>
-    <li>Stateless layer</li>
-  </ul>
-</section> -->
-
-<!-- <section>
-  <h2>The interactivity domain</h2>
-  <h4>(or how to react to user gestures)</h4>
-  <ul>
-    <li>Validation &amp; formatting</li>
-    <li>Navigation</li>
-    <li>Coordinating server/datasource calls</li>
-    <li>Computing the next view model</li>
-  </ul>
-</section> -->
-
-<!-- <section>
-  <h2>The interactivity domain</h2>
-  <h4>(a.k.a. the "controller")</h4>
-  <ul>
-    <li>But also models, routing rules, etc.</li>
-    <li>Most of the UI code should be here</li>
-    <li>Stateful</li>
-  </ul>
-</section> -->
 
 <section>
   <h2>Two domains, two subsystems</h2>
@@ -496,14 +424,14 @@
 </section>
 
 <section>
-  <h2>Testing the controller</h2>
+  <h2>Testing the UX logic</h2>
   <figure>
     <img src="./img/test_control.png">
   </figure>
 </section>
 
 <section>
-  <h2>Testing the controller</h2>
+  <h2>Testing the UX logic</h2>
   <h4>Advantages</h4>
   <ul>
     <li>Plain old test</li>
@@ -514,7 +442,7 @@
 </section>
 
 <section>
-  <h2>Testing the controller</h2>
+  <h2>Testing the UX logic</h2>
   <h4>Tools</h4>
   <ul>
     <li>NPM</li>
@@ -525,7 +453,7 @@
 </section>
 
 <section>
-  <h2>Controller's Behaviours</h2>
+  <h2>UX logic's responsabilities</h2>
   <h4>formatting</h4>
   <pre><code contenteditable class="gherkin">
   Feature: Display order price
@@ -541,7 +469,7 @@
 </section>
 
 <section>
-  <h2>Controller's Behaviours</h2>
+  <h2>UX logic's responsabilities</h2>
   <h4>validating &amp; formatting</h4>
   <pre><code contenteditable class="gherkin">
   Feature: Validate add product form
@@ -560,7 +488,7 @@
 </section>
 
 <section>
-  <h2>Controller's Behaviours</h2>
+  <h2>UX logic's responsabilities</h2>
   <h4>server request &amp; view model update</h4>
   <pre><code contenteditable class="gherkin">
   Feature: User adds a product
@@ -574,73 +502,25 @@
 </section>
 
 <section>
-  <h2>Testing the passive view</h2>
-  <figure style="background-color:white;">
-    <img src="./img/test_view.png">
-  </figure>
-</section>
-
-<section>
-  <h2>Passive view's behaviors</h2>
-  <h4>rendering</h4>
-  <pre><code contenteditable>
-  Feature: Render order
-
-  Scenario:
-    When the following order is rendered:
-      | contents                 | total price | enabled forms             |
-      | 2 Cappucinos, 1 Expresso | Ten dollars | addProduct, completeOrder |
-    Then the total price field will contain "Ten dollars"
-    And the following items will be shown:
-      | product    | quantity |
-      | Cappucinos | 2        |
-      | Expresso   | 1        |
-    And the "addProduct, completeOrder" forms will be enabled
-    And the "removeProduct, cancelOrder" forms will be disabled
-  </code></pre>
-</section>
-
-<section>
-  <h2>Passive view's behaviors</h2>
-  <h4>user gestures</h4>
-  <pre><code contenteditable class="gherkin">
-  Feature: Request to add a product
-
-  Background:
-    Given that the "product" input has been filled with "Cappucino"
-    And that the "quantity" input has been filled with "error"
-
-  Scenario: using enter
-    Given that the "product" input has focus
-    When the user press "ENTER"
-    Then the user request to add "error Cappucino"
-
-  Scenario: using button
-    When the user clicks the "submit" button
-    Then the user request to add "error Cappucino"
-  </code></pre>
-</section>
-
-<section>
-  <h2>Testing the passive view</h2>
-  <h4>It has disadvantages!!</h4>
+  <h2>Should I test the view?</h2>
+  <h4>No, don't do it!!</h4>
   <ul>
-    <li>Slow</li>
-    <li>Brittle</li>
+    <li>Most of the code alredy tested</li>
+    <li>Browser interaction -&gt; Slow</li>
+    <li>DOM coupling -&gt; Brittle</li>
     <li>Technologically complex</li>
     <li>Hard to test first</li>
   </ul>
 </section>
 
 <section>
-  <h2>The passive view</h2>
-  <h4>Should we test it?</h4>
+  <h2>Should I test the view?</h2>
+  <h4>Yes of course!!</h4>
   <ul>
-    <li>Is it a source of bugs?</li>
-    <li>Is it complex enough?</li>
-    <li>Is crossbrowser solved by library?</li>
-    <li>Complex user gestures?</li>
-    <li>Complex visualizations?</li>
+    <li>If it is really a source of bugs</li>
+    <li>If it is has complex visualization</li>
+    <li>If it is has complex user gestures</li>
+    <li>Crossbrowser problems</li>
   </ul>
 </section>
 
@@ -678,6 +558,26 @@
     <li>WebDriverJS: <a href="https://code.google.com/p/selenium/wiki/WebDriverJs">https://code.google.com/p/selenium/wiki/WebDriverJs</a></li>
     <li>WebDriver IO: <a href="http://webdriver.io/">http://webdriver.io/</a></li>
   </ul>
+</section>
+
+<section>
+  <h2>View's responsabilities</h2>
+  <h4>rendering</h4>
+  <pre><code contenteditable>
+    Feature: Render order
+
+    Scenario:
+      When the following order is rendered:
+        | contents                 | total price | enabled forms             |
+        | 2 Cappucinos, 1 Expresso | Ten dollars | addProduct, completeOrder |
+      Then the total price field will contain "Ten dollars"
+      And the following items will be shown:
+        | product    | quantity |
+        | Cappucinos | 2        |
+        | Expresso   | 1        |
+      And the "addProduct, completeOrder" forms will be enabled
+      And the "removeProduct, cancelOrder" forms will be disabled
+  </code></pre>
 </section>
 
 <section>
@@ -756,6 +656,27 @@
 </section>
 
 <section>
+  <h2>View's responsabilities</h2>
+  <h4>user gestures</h4>
+  <pre><code contenteditable class="gherkin">
+    Feature: Request to add a product
+
+    Background:
+      Given that the "product" input has been filled with "Cappucino"
+      And that the "quantity" input has been filled with "error"
+
+    Scenario: using enter
+      Given that the "product" input has focus
+      When the user press "ENTER"
+      Then the user request to add "error Cappucino"
+
+    Scenario: using button
+      When the user clicks the "submit" button
+      Then the user request to add "error Cappucino"
+  </code></pre>
+</section>
+
+<section>
   <h2>Testing user gestures</h2>
   <figure style="background-color:white;">
     <img src="./img/test_view_gestures.png">
@@ -772,11 +693,11 @@
           someTestOrderViewModel = arguments[0],
           cb = arguments[1];
 
-      window.controller = {
+      window.uxLogic = {
         addBeverage: sinon.spy()
       };
 
-      newOrderView('.container', window.controller)
+      newOrderView('.container', window.uxLogic)
           .render(someTestOrderViewModel, cb);
     }, someTestOrderViewModel);
   });
@@ -813,7 +734,7 @@
     }).clear();
 
     return driver.executeScript(function () {
-      controller.addBeverage.reset();
+      uxLogic.addBeverage.reset();
     });
   });
   </code></pre>
@@ -846,7 +767,7 @@
   return this.driver.executeScript(function () {
     var expectedParameters = arguments[0];
 
-    expect(controller.addBeverage)
+    expect(uxLogic.addBeverage)
         .to.have.been.calledWith(expectedParameters);
   }, expectedParameters);
   </code></pre>
